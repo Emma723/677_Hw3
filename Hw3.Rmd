@@ -1,0 +1,79 @@
+---
+title: "MA677HW3"
+author: "Qixuan Zhang"
+date: "03/08/2019"
+output:
+  word_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(ggplot2)
+library(plotly)
+library(tidyverse)
+library(magrittr)
+library(readr)
+library(RCurl)
+```
+
+1.
+```{r}
+D=read.table("maybe_uniform.txt")
+u=c(D$V1,D$V2,D$V3,D$V4,D$V5)
+ks.test(u,"punif")
+x<-seq(-5, 5, by=0.01)
+fx <- ifelse(x > 0 & x <=0.5, 2/3,
+   ifelse(x > 0.5 & x < 1,  0.5, 0))
+plot(x,fx)
+ks.test(fx,"punif")
+```
+According to result of ks-test, these data is distributed as a Uniform distribution on [0,1].
+Since in ks-test, the D value of fx is less than that of data, the model below is better than the Uniform。
+
+2.
+```{r}
+D2=read.table("maybe_normal.txt")
+d=c(D2$V1,D2$V2,D2$V3,D2$V4,D2$V5)
+u=(c(D2$V1,D2$V2,D2$V3,D2$V4,D2$V5)-rep(26,50))/2
+ks.test(u,"pnorm")
+qqnorm(d)
+hist(d)
+```
+According to Ks-test and qqnorm, the data generally follow normal disatribution.
+
+
+3. 
+```{r}
+D31=read.table("maybe_same_1.txt")
+x=c(D31$V1,D31$V2,D31$V3,D31$V4,D31$V5)
+D32=read.table("maybe_same_2.txt")
+y=c(D32$V1,D32$V2,D32$V3,D32$V4,D32$V5)
+ks.test(x,y)
+ks.test(x+2,y)
+```
+
+X and Y are from the same distribution. X+2 and Y are not from the same distribution
+
+
+4. 
+```{r}
+library(ACSWR)
+
+D4=readRDS("norm_sample.Rdata")
+D4_ecdf=ecdf(D4)
+D4_ecdf_summary=summary(D4_ecdf)
+plot.ecdf(D4)
+
+us=rnorm(25)
+ks.test(D4,us)
+```
+
+
+5. 
+```{r}
+
+```
+
+
